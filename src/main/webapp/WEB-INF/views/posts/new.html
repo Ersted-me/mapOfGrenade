@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create post</title>
+</head>
+<body>
+
+<!--<th:block th:each="priority : ${T(org.suai.tracker_test.model.Priority).values()}">
+    <label class="containerButton" th:inline="text">[[${priority}]]
+        <input type="radio" th:field="*{priority}" th:value="${priority}" name="priority"/>
+    </label>
+</th:block>-->
+
+<form th:method="POST" th:action="@{/posts}" >
+    <label for="description">Description:</label>
+    <input type="text" th:field="*{post.description}" id="description">
+    <br/>
+    <br/>
+    <th:block th:each="map: ${maps}">
+        <label th:inline="text">
+            <input type="radio" th:field="*{gameMap.name}" th:value="${map.getName()}" name="name"/>
+            [[${map.getName()}]]
+        </label>
+        <br>
+    </th:block>
+    <input type="submit" value="Add post">
+</form>
+</body>
+</html>
