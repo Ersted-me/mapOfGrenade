@@ -3,9 +3,11 @@ package ru.rydkoc.mapOfGrenade.model;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import sun.util.resources.LocaleData;
+
 
 import javax.persistence.*;
+import java.time.LocalDate;
+
 
 @MappedSuperclass
 @Data
@@ -17,11 +19,11 @@ public class BaseEntity {
 
     @CreatedDate
     @Column(name = "created")
-    private LocaleData created;
+    private LocalDate created;
 
     @LastModifiedDate
     @Column(name = "updated")
-    private LocaleData updated;
+    private LocalDate updated;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

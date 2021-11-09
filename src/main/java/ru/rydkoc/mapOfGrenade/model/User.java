@@ -1,9 +1,9 @@
 package ru.rydkoc.mapOfGrenade.model;
 
 import lombok.Data;
-import sun.util.resources.LocaleData;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -20,7 +20,7 @@ public class User extends BaseEntity{
     private String middleName;
 
     @Column(name = "date_of_birthday")
-    private LocaleData dateOfBirthday;
+    private LocalDate dateOfBirthday;
 
     @Column(name = "username")
     private String userName;
@@ -31,9 +31,10 @@ public class User extends BaseEntity{
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-    joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-    inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
 }
