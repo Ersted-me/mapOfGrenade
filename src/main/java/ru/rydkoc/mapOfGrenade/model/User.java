@@ -1,6 +1,7 @@
 package ru.rydkoc.mapOfGrenade.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -9,7 +10,9 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
+@ToString(callSuper=true)
 public class User extends BaseEntity{
+
     @Column(name = "firstname")
     private String firstName;
 
