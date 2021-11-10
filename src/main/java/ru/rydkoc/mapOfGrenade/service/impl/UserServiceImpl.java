@@ -2,8 +2,6 @@ package ru.rydkoc.mapOfGrenade.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.rydkoc.mapOfGrenade.model.Role;
@@ -13,6 +11,7 @@ import ru.rydkoc.mapOfGrenade.repository.RoleRepository;
 import ru.rydkoc.mapOfGrenade.repository.UserRepository;
 import ru.rydkoc.mapOfGrenade.service.UserService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +34,13 @@ public class UserServiceImpl implements UserService {
 
 
     public User register(User user) {
+        User resultUser = userRepository.findUserByEmail(user.getEmail());
+
+        if(resultUser != null){
+            log.warn("IN register - user with email: {} is already registered", resultUser.getEmail());
+            return null;
+        }
+
         Role roleUser = roleRepository.findByName("ROLE_USER");
         List<Role> userRoles = new ArrayList<>();
         userRoles.add(roleUser);
@@ -42,6 +48,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(userRoles);
         user.setStatus(Status.ACTIVE);
+        user.setCreated(LocalDate.now());
+        user.setUpdated(LocalDate.now());
 
         User registeredUser = userRepository.save(user);
 
@@ -52,6 +60,12 @@ public class UserServiceImpl implements UserService {
 
     public User findByEmail(String email) {
         User resultUser = userRepository.findUserByEmail(email);
+
+        if(resultUser == null){
+            log.warn("IN findByEmail - no user found by email: {}", email);
+            return null;
+        }
+
         log.info("IN findByEmail - user: {} found by email: {}", resultUser, email);
         return resultUser;
     }
@@ -76,7 +90,13 @@ public class UserServiceImpl implements UserService {
     }
 
     public void delete(Long id) {
-        userRepository.deleteById(id);
-        log.info("IN delete - user with id: {} successfully deleted", id);
+        User resultUser = userRepository.findById(id).orElse(null);
+
+        if(resultUser != null){
+            userRepository.deleteById(id);
+            log.info("IN delete - user with id: {} successfully deleted", id);
+        }
+
+        log.warn("IN delete - no user found by Id: {}", id);
     }
 }
