@@ -1,5 +1,6 @@
 package ru.rydkoc.mapOfGrenade.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
