@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
 
     public User register(User user) {
-        User resultUser = userRepository.findUserByEmail(user.getEmail());
+        User resultUser = userRepository.findUserByEmail(user.getEmail()).orElse(null);
 
         if(resultUser != null){
             log.warn("IN register - user with email: {} is already registered", resultUser.getEmail());
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public User findByEmail(String email) {
-        User resultUser = userRepository.findUserByEmail(email);
+        User resultUser = userRepository.findUserByEmail(email).orElse(null);
 
         if(resultUser == null){
             log.warn("IN findByEmail - no user found by email: {}", email);
